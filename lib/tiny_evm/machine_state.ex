@@ -4,7 +4,7 @@ defmodule TinyEVM.MachineState do
   9.4.1 in the Yellow Paper.
   """
 
-  alias TinyEVM.{Stack}
+  alias TinyEVM.{Stack, MachineState, MachineCode.Metadata}
 
   defstruct gas: 0,
             program_counter: 0,
@@ -38,5 +38,11 @@ defmodule TinyEVM.MachineState do
     {values, stack} = Stack.pop_n(machine_state.stack, n)
     machine_state = %{machine_state | stack: stack}
     {values, machine_state}
+  end
+
+  @spec move_program_counter(MachineState.t(), Metadata.t()) :: MachineState.t()
+  def move_program_counter(machine_state, operation) do
+    next_position = machine_state.program_counter + operation.machine_code_offset + 1
+    %{machine_state | program_counter: next_position}
   end
 end

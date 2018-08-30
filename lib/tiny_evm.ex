@@ -110,9 +110,10 @@ defmodule TinyEVM do
   @spec cycle(WorldState.t(), MachineState.t(), ExecutionEnvironment.t()) :: {WorldState.t(), MachineState.t(), ExecutionEnvironment.t()}
   def cycle(world_state, machine_state, execution_environment) do
     operation = MachineCode.current_operation(machine_state, execution_environment)
-    inputs = Operation.inputs(operation, machine_state)
 
     {machine_state_n, execution_environment_n} = Operation.run(operation, machine_state, execution_environment)
+
+    final_machine_state = MachineState.move_program_counter(machine_state_n, operation)
   end
 
   @doc"""
