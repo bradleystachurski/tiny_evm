@@ -4,11 +4,16 @@ defmodule TinyEVM.MachineState do
   9.4.1 in the Yellow Paper.
   """
 
-  defstruct gas: nil,
+  alias TinyEVM.{Stack}
+
+  defstruct gas: 0,
             program_counter: 0,
             memory_contents: <<>>,
-            words_in_memory: nil,
-            stack: nil
+            words_in_memory: 0,
+            stack: [],
+            last_return_data: []
+
+  @type program_counter :: integer()
 
   @typedoc"""
   From Yellow Paper:
@@ -21,10 +26,17 @@ defmodule TinyEVM.MachineState do
       - `s`: stack contents
   """
   @type t :: %__MODULE__{
-          gas: integer(),
-          program_counter: integer(),
-          memory_contents: binary(),
-          words_in_memory: integer(),
-          stack: [integer()]
-        }
+               gas: integer(),
+               program_counter: program_counter,
+               memory_contents: binary(),
+               words_in_memory: integer(),
+               stack: [integer()],
+               last_return_data: [integer()] | []
+             }
+
+  def pop_n(machine_state, n) do
+    {values, stack} = Stack.pop_n(machine_state.stack, n)
+    machine_state = %{machine_state | stack: stack}
+    {values, machine_state}
+  end
 end
