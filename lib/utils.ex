@@ -3,6 +3,8 @@ defmodule Utils do
   Utility functions for the project
   """
 
+  alias TinyEVM.{MachineState, ExecutionEnvironment, Operation.Metadata}
+
   use Bitwise
 
   @int_size 256
@@ -20,4 +22,6 @@ defmodule Utils do
   @spec encode_signed(integer()) :: integer()
   def encode_signed(n) when n < 0, do: @max_int - abs(n)
   def encode_signed(n), do: n
+
+#  @spec insufficient_gas?(MachineState.t(), ExecutionEnvironment.t(), Metadata.t())
 end

@@ -8,6 +8,7 @@ defmodule TinyEVM.Operation do
 
   @type op_result :: any()
   @type operation :: atom()
+  @type stack_args :: [integer()]
 
   @operations %{
     0x00 => %Metadata{
@@ -26,13 +27,12 @@ defmodule TinyEVM.Operation do
       outputs: 1,
       description: "Bitwise XOR operation"
     },
-    0x9D => %Metadata{
-      value: 0x9D,
-      mnemonic: :swap14,
-      function: :swap14,
-      inputs: 15,
-      outputs: 15,
-      description: "Exchange the 1st and 15th stack items"
+    0x55 => %Metadata{
+      value: 0x55,
+      mnemonic: :sstore,
+      function: :sstore,
+      inputs: 2,
+      outputs: 0
     },
     0x60 => %Metadata{
       value: 0x60,
@@ -49,6 +49,14 @@ defmodule TinyEVM.Operation do
       args: [32],
       inputs: 0,
       outputs: 1
+    },
+    0x9D => %Metadata{
+      value: 0x9D,
+      mnemonic: :swap14,
+      function: :swap_n,
+      inputs: 15,
+      outputs: 15,
+      description: "Exchange the 1st and 15th stack items"
     }
   }
 
@@ -120,13 +128,13 @@ defmodule TinyEVM.Operation do
 
     next_machine_state =
       if op_result[:stack],
-         do: %{base_machine_state | stack: op_result[:stack]},
-         else: base_machine_state
+        do: %{base_machine_state | stack: op_result[:stack]},
+        else: base_machine_state
 
     next_machine_state =
       if op_result[:last_return_data],
-         do: %{next_machine_state | last_return_data: op_result[:last_return_data]},
-         else: %{next_machine_state | last_return_data: []}
+        do: %{next_machine_state | last_return_data: op_result[:last_return_data]},
+        else: %{next_machine_state | last_return_data: []}
 
     next_execution_environment = op_result[:execution_environment] || execution_environment
 
@@ -144,9 +152,9 @@ defmodule TinyEVM.Operation do
   end
 
   def push_n(n, _args, %{
-    machine_state: machine_state,
-    execution_environment: %{machine_code: machine_code}
-  }) do
+        machine_state: machine_state,
+        execution_environment: %{machine_code: machine_code}
+      }) do
     machine_code
     |> read_memory(machine_state.program_counter + 1, n)
     |> :binary.decode_unsigned()
@@ -173,14 +181,24 @@ defmodule TinyEVM.Operation do
     Stack.peep_n(machine_state.stack, operation.inputs)
   end
 
+  @spec mulmod(stack_args()) :: op_result()
   def mulmod([_s_0, _s_1, s_2]) when s_2 == 0, do: 0
   def mulmod([s_0, s_1, s_2]), do: rem(s_0 * s_1, s_2)
 
   def xor([s_0, s_1]), do: bxor(s_0, s_1)
 
-  @spec swap14([...]) :: [...]
-  def swap14(list) do
+  @spec swap_n([...]) :: [...]
+  def swap_n(list) do
     updated_first = List.replace_at(list, 0, List.last(list))
     List.replace_at(updated_first, -1, List.first(list))
+  end
+
+  @spec sstore(stack_args(), ExecutionEnvironment.t()) :: op_result()
+  def sstore([key, value], execution_environment) do
+    account_interface = %{
+      execution_environment.address => %{key: value}
+    }
+
+    Map.put(execution_environment, :account_interface, account_interface)
   end
 end

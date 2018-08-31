@@ -15,7 +15,8 @@ defmodule TinyEVM do
     refunds, suicides, or logs.
   """
 
-  alias TinyEVM.{WorldState, MachineState, ExecutionEnvironment, MachineCode}
+  alias TinyEVM.{WorldState, MachineState, ExecutionEnvironment, MachineCode, Operation}
+  alias Utils
 
   @type gas :: non_neg_integer()
   @type storage :: %{optional(String.t()) => map()}
@@ -84,13 +85,13 @@ defmodule TinyEVM do
           original_machine_state,
           original_execution_environment}
       ) do
-    case exceptional_halt_state?(world_state, machine_state, execution_environment) do
+    case exceptional_halt_state?(machine_state, execution_environment) do
       true ->
         {original_world_state, original_machine_state, original_execution_environment, :failed}
 
       false ->
         {world_state_n, machine_state_n, execution_environment_n} =
-          cycle(world_state, machine_state, execution_environment)
+          cycle(machine_state, execution_environment)
 
         case normal_halt_state?(world_state_n, execution_environment_n) do
           {false, _} ->
@@ -107,13 +108,13 @@ defmodule TinyEVM do
   @doc"""
   The Execution Cycle, defined as `O` in Section 9.4 of the Yellow Paper.
   """
-  @spec cycle(WorldState.t(), MachineState.t(), ExecutionEnvironment.t()) :: {WorldState.t(), MachineState.t(), ExecutionEnvironment.t()}
-  def cycle(world_state, machine_state, execution_environment) do
+  @spec cycle(MachineState.t(), ExecutionEnvironment.t()) :: {MachineState.t(), ExecutionEnvironment.t()}
+  def cycle(machine_state, execution_environment) do
     operation = MachineCode.current_operation(machine_state, execution_environment)
-
     {machine_state_n, execution_environment_n} = Operation.run(operation, machine_state, execution_environment)
-
     final_machine_state = MachineState.move_program_counter(machine_state_n, operation)
+
+    {final_machine_state, execution_environment_n}
   end
 
   @doc"""
@@ -121,9 +122,22 @@ defmodule TinyEVM do
 
   If this function evaluates to true, any changes are discarded except for gas used.
   """
-  @spec exceptional_halt_state?(WorldState.t(), MachineState.t(), ExecutionEnviornment.t()) :: boolean()
-  def exceptional_halt_state?(world_state, machine_state, execution_environment) do
-    # placeholder for now
+  @spec exceptional_halt_state?(MachineState.t(), ExecutionEnviornment.t()) :: boolean()
+  def exceptional_halt_state?(machine_state, execution_environment) do
+    operation =
+      Operation.get_operation_at(execution_environment.machine_code, machine_state.program_counter)
+      |> Operation.metadata()
+
+#    cond do
+#      # check insufficient gas
+#      Utils.insufficient_gas?(machine_state, execution_environment, operation)
+#    end
+
+    # check instruction is invalid (delta subscript is undefined)
+    # check insufficient stack items
+    # check JUMP/JUMPI destination invalid
+    # check new stack size > 1024
+    # check state modification attempted during static call
     false
   end
 
