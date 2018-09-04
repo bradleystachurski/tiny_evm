@@ -48,8 +48,7 @@ defmodule TinyEVM do
     world_state = %WorldState{}
     machine_state = %MachineState{gas: gas}
 
-    machine_code = MachineCode.convert_string_to_machine_code(code)
-    execution_environment = %ExecutionEnvironment{machine_code: machine_code}
+    execution_environment = %ExecutionEnvironment{machine_code: code}
 
     {world_state, gas, output} = execution_xi(world_state, machine_state, execution_environment)
     {gas, world_state}

@@ -7,12 +7,7 @@ defmodule TinyEVM.MachineCode do
   alias TinyEVM.Operation.Metadata
 
   @type t :: binary()
-
-  @spec convert_string_to_machine_code(String.t()) :: t()
-  def convert_string_to_machine_code(machine_code_str) do
-    machine_code_str |> String.slice(2..-1) |> Base.decode16!(case: :mixed)
-  end
-
+  
   @doc"""
   `w` from the Yellow Paper
   """
