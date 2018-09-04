@@ -15,7 +15,7 @@ defmodule TinyEVM do
     refunds, suicides, or logs.
   """
 
-  alias TinyEVM.{WorldState, MachineState, ExecutionEnvironment, MachineCode, Operation}
+  alias TinyEVM.{WorldState, MachineState, ExecutionEnvironment, MachineCode, Operation, Gas}
   alias Utils
 
   @type gas :: non_neg_integer()
@@ -100,8 +100,6 @@ defmodule TinyEVM do
           {true, output} ->
             {world_state_n, machine_state_n, output}
         end
-
-
     end
   end
 
@@ -128,15 +126,22 @@ defmodule TinyEVM do
       Operation.get_operation_at(execution_environment.machine_code, machine_state.program_counter)
       |> Operation.metadata()
 
-#    cond do
-#      # check insufficient gas
-#      Utils.insufficient_gas?(machine_state, execution_environment, operation)
-#    end
+      cond do
+        Gas.insufficient_gas?(machine_state, execution_environment) -> true
 
-    # check instruction is invalid (delta subscript is undefined)
-    # check insufficient stack items
-    # check JUMP/JUMPI destination invalid
-    # check new stack size > 1024
+        Utils.invalid_instruction?(operation) -> true
+
+        Utils.insufficient_stack_items?(operation, machine_state) -> true
+
+        # Omitting check for JUMP/JUMPI since the opcodes aren't implemented
+
+        Utils.will_exceed_stack_size?(operation, machine_state) -> true
+
+        # Only state modificaiton opcode implemented is sstore, no need to check for others
+        !execution_environment.permission && operation.mnemonic == :sstore -> true
+      end
+
+
     # check state modification attempted during static call
     false
   end
