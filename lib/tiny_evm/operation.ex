@@ -3,7 +3,15 @@ defmodule TinyEVM.Operation do
   The Instruction Set defined in Appendix H of the Yellow Paper.
   """
 
-  alias TinyEVM.{MachineState, MachineCode, Operation.Metadata, Stack}
+  alias TinyEVM.{
+    WorldState,
+    MachineState,
+    MachineCode,
+    Operation.Metadata,
+    Stack,
+    ExecutionEnvironment
+  }
+
   use Bitwise
 
   @type op_result :: any()
@@ -40,7 +48,8 @@ defmodule TinyEVM.Operation do
       function: :push_n,
       args: [1],
       inputs: 0,
-      outputs: 1
+      outputs: 1,
+      machine_code_offset: 1
     },
     0x7F => %Metadata{
       value: 0x7F,
@@ -48,7 +57,8 @@ defmodule TinyEVM.Operation do
       function: :push_n,
       args: [32],
       inputs: 0,
-      outputs: 1
+      outputs: 1,
+      machine_code_offset: 32
     },
     0x9D => %Metadata{
       value: 0x9D,
@@ -60,21 +70,27 @@ defmodule TinyEVM.Operation do
     }
   }
 
-  @spec run(Metadata.t(), MachineState.t(), ExecutionEnvironment.t()) ::
-          {MachineState.t(), ExecutionEnvironment.t()}
-  def run(operation, machine_state, execution_environment) do
+  @spec run(WorldState.t(), Metadata.t(), MachineState.t(), ExecutionEnvironment.t()) ::
+          {WorldState.t(), MachineState.t(), ExecutionEnvironment.t()}
+  def run(world_state, operation, machine_state, execution_environment) do
+    IO.puts "------------------------------"
+    IO.puts "New Operation running"
+    IO.inspect(operation.mnemonic, label: "operation.mnemonic")
     {args, updated_machine_state} =
-      operation_args(operation, machine_state, execution_environment)
+      operation_args(operation, machine_state, execution_environment, world_state)
+    IO.inspect(args, label: "args")
 
-    apply(__MODULE__, operation.function, args)
-    |> normalize_op_result(updated_machine_state.stack)
-    |> merge_state(updated_machine_state, execution_environment)
+    {world_state_n, machine_state_n, execution_environment_n} =
+      apply(__MODULE__, operation.function, args)
+      |> normalize_op_result(updated_machine_state.stack)
+      |> merge_state(updated_machine_state, execution_environment, world_state)
   end
 
-  def operation_args(operation, machine_state, execution_environment) do
+  def operation_args(operation, machine_state, execution_environment, world_state) do
     {stack_args, updated_machine_state} = MachineState.pop_n(machine_state, operation.inputs)
 
     vm_map = %{
+      world_state: world_state,
       stack: updated_machine_state.stack,
       machine_state: updated_machine_state,
       execution_environment: execution_environment
@@ -107,23 +123,16 @@ defmodule TinyEVM.Operation do
   end
 
   # TODO: potentially change `merge_state` to be handled within the operation
-  @spec merge_state(op_result(), MachineState.t(), ExecutionEnvironment.t()) ::
-          {MachineState.t(), ExecutionEnvironment.t()}
-  def merge_state(:noop, machine_state, execution_environment) do
-    {machine_state, execution_environment}
+  @spec merge_state(op_result(), MachineState.t(), ExecutionEnvironment.t(), WorldState.t()) ::
+          {WorldState.t(), MachineState.t(), ExecutionEnvironment.t()}
+  def merge_state(:noop, machine_state, execution_environment, world_state) do
+    {world_state, machine_state, execution_environment}
   end
 
-  def merge_state(
-        updated_machine_state = %MachineState{},
-        _old_machine_state,
-        execution_environment
-      ) do
-    next_machine_state = %{updated_machine_state | last_return_data: []}
-
-    {next_machine_state, execution_environment}
-  end
-
-  def merge_state(op_result = %{}, machine_state, execution_environment) do
+  def merge_state(op_result = %{}, machine_state, execution_environment, world_state) do
+    IO.puts "inside where we want to be"
+    IO.inspect(op_result, label: "op_result")
+    next_world_state = op_result[:world_state] || world_state
     base_machine_state = op_result[:machine_state] || machine_state
 
     next_machine_state =
@@ -138,7 +147,7 @@ defmodule TinyEVM.Operation do
 
     next_execution_environment = op_result[:execution_environment] || execution_environment
 
-    {next_machine_state, next_execution_environment}
+    {next_world_state, next_machine_state, next_execution_environment}
   end
 
   @spec get_operation_at(MachineCode.t(), MachineState.program_counter()) :: byte()
@@ -187,18 +196,17 @@ defmodule TinyEVM.Operation do
 
   def xor([s_0, s_1]), do: bxor(s_0, s_1)
 
-  @spec swap_n([...]) :: [...]
-  def swap_n(list) do
-    updated_first = List.replace_at(list, 0, List.last(list))
-    List.replace_at(updated_first, -1, List.first(list))
+  def swap_n(stack_args, _vm_map) do
+    updated_first = List.replace_at(stack_args, 0, List.last(stack_args))
+    List.replace_at(updated_first, -1, List.first(stack_args))
   end
 
-  @spec sstore(stack_args(), ExecutionEnvironment.t()) :: op_result()
-  def sstore([key, value], execution_environment) do
-    account_interface = %{
-      execution_environment.address => %{key: value}
-    }
-
-    Map.put(execution_environment, :account_interface, account_interface)
+  def sstore([key, value], %{
+        world_state: world_state,
+        execution_environment: execution_environmnet
+      }) do
+    account_state = %{key => value}
+    updated_world_state = Map.put(world_state, execution_environmnet.address, account_state)
+    %{world_state: updated_world_state}
   end
 end

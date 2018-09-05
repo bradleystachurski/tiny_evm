@@ -10,12 +10,9 @@ defmodule TinyEVM.WorldState do
   a mapping between 160 bit addresses and RLP serialized account states.
   """
 
-  defstruct state: %{}
-
   @typedoc """
-  A modified World State, represented
+  A modified World State, represented as a mapping of addresses (String) to
+  account states (map)
   """
-  @type t :: %__MODULE__{
-               state: %{required(String.t()) => map()} | %{}
-             }
+  @type t :: %{String.t() => map()} | %{}
 end

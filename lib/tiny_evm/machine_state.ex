@@ -26,14 +26,29 @@ defmodule TinyEVM.MachineState do
       - `s`: stack contents
   """
   @type t :: %__MODULE__{
-               gas: integer(),
+               gas: non_neg_integer(),
                program_counter: program_counter,
                memory_contents: binary(),
                words_in_memory: integer(),
-               stack: [integer()],
+               stack: Stack.t(),
                last_return_data: [integer()] | []
              }
 
+  @doc"""
+  Removes and returns `n` items from the stack and updates the
+  machine state.
+
+  ## Paramaters
+
+    - `machine_state`: The given machine state.
+    - `n`: The number of items to remove and return from the stack.
+
+  ## Returns
+
+    - `values`: Items returned from the stack.
+    - `machine_state`: Updated machine state.
+  """
+  @spec pop_n(MachineState.t(), non_neg_integer()) :: {[integer()], MachineState.t()}
   def pop_n(machine_state, n) do
     {values, stack} = Stack.pop_n(machine_state.stack, n)
     machine_state = %{machine_state | stack: stack}

@@ -43,15 +43,15 @@ defmodule TinyEVM do
 
     # Some pretty cool examples go here
   """
-  @spec execution_model_entry(String.t(), gas, binary()) :: {gas, storage}
+  @spec execution_model_entry(String.t(), gas, binary()) :: {gas, WorldState.t()}
   def execution_model_entry(address, gas, code) do
-    world_state = %WorldState{}
+    world_state = %{}
     machine_state = %MachineState{gas: gas}
+    # setting permission for state modificaiton to true for this implementation
+    execution_environment = %ExecutionEnvironment{address: address, machine_code: code, permission: true}
 
-    execution_environment = %ExecutionEnvironment{machine_code: code}
-
-    {world_state, gas, output} = execution_xi(world_state, machine_state, execution_environment)
-    {gas, world_state}
+    {world_state_prime, machine_state_prime, _output} = execution_xi(world_state, machine_state, execution_environment)
+    {machine_state_prime.gas, world_state_prime}
   end
 
   @doc"""
@@ -86,14 +86,15 @@ defmodule TinyEVM do
       ) do
     case exceptional_halt_state?(machine_state, execution_environment) do
       true ->
+        IO.puts "matched exceptional_halt_state"
         {original_world_state, original_machine_state, original_execution_environment, :failed}
 
       false ->
         {world_state_n, machine_state_n, execution_environment_n} =
-          cycle(machine_state, execution_environment)
+          cycle(world_state, machine_state, execution_environment)
 
-        case normal_halt_state?(world_state_n, execution_environment_n) do
-          {false, _} ->
+        case normal_halt_state?(machine_state_n, execution_environment_n) do
+          false ->
             recursive_execution_chi(world_state_n, machine_state_n, execution_environment_n, {original_world_state, original_machine_state, original_execution_environment})
 
           {true, output} ->
@@ -105,13 +106,16 @@ defmodule TinyEVM do
   @doc"""
   The Execution Cycle, defined as `O` in Section 9.4 of the Yellow Paper.
   """
-  @spec cycle(MachineState.t(), ExecutionEnvironment.t()) :: {MachineState.t(), ExecutionEnvironment.t()}
-  def cycle(machine_state, execution_environment) do
+  @spec cycle(WorldState.t(), MachineState.t(), ExecutionEnvironment.t()) :: {WorldState.t(), MachineState.t(), ExecutionEnvironment.t()}
+  def cycle(world_state, machine_state, execution_environment) do
     operation = MachineCode.current_operation(machine_state, execution_environment)
-    {machine_state_n, execution_environment_n} = Operation.run(operation, machine_state, execution_environment)
+    {world_state_n, machine_state_n, execution_environment_n} = Operation.run(world_state, operation, machine_state, execution_environment)
     final_machine_state = MachineState.move_program_counter(machine_state_n, operation)
 
-    {final_machine_state, execution_environment_n}
+    IO.inspect(world_state_n, label: "world_state_n")
+    IO.inspect(final_machine_state, label: "final_machine_state")
+    IO.inspect(execution_environment_n, label: "execution_environment_n")
+    {world_state_n, final_machine_state, execution_environment_n}
   end
 
   @doc"""
@@ -138,11 +142,9 @@ defmodule TinyEVM do
 
         # Only state modificaiton opcode implemented is sstore, no need to check for others
         !execution_environment.permission && operation.mnemonic == :sstore -> true
+
+        true -> false
       end
-
-
-    # check state modification attempted during static call
-    false
   end
 
   @doc"""
@@ -151,6 +153,10 @@ defmodule TinyEVM do
   @spec normal_halt_state?(MachineState.t(), ExecutionEnvironment.t()) :: boolean() | {boolean(), output}
   def normal_halt_state?(machine_state, execution_environment) do
     # placeholder for now
-    false
+    if machine_state.program_counter >= byte_size(execution_environment.machine_code) do
+      {true, machine_state.last_return_data}
+    else
+      false
+    end
   end
 end

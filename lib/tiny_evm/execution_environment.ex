@@ -15,11 +15,15 @@ defmodule TinyEVM.ExecutionEnvironment do
             machine_code: <<>>,
             block_header: nil,
             call_depth: nil,
-            permission: false,
-            account_interface: nil
+            permission: false
 
+  @typespec"""
+  From the Yellow Paper...
+  Note: address is represented here as a string. The full implementation
+  will represent addresses as a...
+  """
   @type t :: %__MODULE__{
-          address: <<_::160>>,
+          address: String.t(),
           origin: <<_::160>>,
           gas_price: non_neg_integer(),
           data: binary(),
@@ -28,7 +32,6 @@ defmodule TinyEVM.ExecutionEnvironment do
           machine_code: MachineCode.t(),
           # not sure on this one
           block_header: binary(),
-          permission: boolean(),
-          account_interface: map()
+          permission: boolean()
         }
 end
