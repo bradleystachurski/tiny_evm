@@ -86,7 +86,6 @@ defmodule TinyEVM do
       ) do
     case exceptional_halt_state?(machine_state, execution_environment) do
       true ->
-        IO.puts "matched exceptional_halt_state"
         {original_world_state, original_machine_state, original_execution_environment, :failed}
 
       false ->

@@ -19,8 +19,8 @@ defmodule TinyEVM.Operation do
   @type stack_args :: [integer()]
 
   @operations %{
-    0x00 => %Metadata{
-      value: 0x00,
+    0x09 => %Metadata{
+      value: 0x09,
       mnemonic: :mulmod,
       function: :mulmod,
       inputs: 3,
@@ -73,12 +73,8 @@ defmodule TinyEVM.Operation do
   @spec run(WorldState.t(), Metadata.t(), MachineState.t(), ExecutionEnvironment.t()) ::
           {WorldState.t(), MachineState.t(), ExecutionEnvironment.t()}
   def run(world_state, operation, machine_state, execution_environment) do
-    IO.puts "------------------------------"
-    IO.puts "New Operation running"
-    IO.inspect(operation.mnemonic, label: "operation.mnemonic")
     {args, updated_machine_state} =
       operation_args(operation, machine_state, execution_environment, world_state)
-    IO.inspect(args, label: "args")
 
     {world_state_n, machine_state_n, execution_environment_n} =
       apply(__MODULE__, operation.function, args)
@@ -130,8 +126,6 @@ defmodule TinyEVM.Operation do
   end
 
   def merge_state(op_result = %{}, machine_state, execution_environment, world_state) do
-    IO.puts "inside where we want to be"
-    IO.inspect(op_result, label: "op_result")
     next_world_state = op_result[:world_state] || world_state
     base_machine_state = op_result[:machine_state] || machine_state
 
@@ -190,11 +184,11 @@ defmodule TinyEVM.Operation do
     Stack.peep_n(machine_state.stack, operation.inputs)
   end
 
-  @spec mulmod(stack_args()) :: op_result()
-  def mulmod([_s_0, _s_1, s_2]) when s_2 == 0, do: 0
-  def mulmod([s_0, s_1, s_2]), do: rem(s_0 * s_1, s_2)
+  @spec mulmod(stack_args(), map()) :: op_result()
+  def mulmod([_s_0, _s_1, s_2], _vm_map) when s_2 == 0, do: 0
+  def mulmod([s_0, s_1, s_2], _vm_map), do: rem(s_0 * s_1, s_2)
 
-  def xor([s_0, s_1]), do: bxor(s_0, s_1)
+  def xor([s_0, s_1], _vm_map), do: bxor(s_0, s_1)
 
   def swap_n(stack_args, _vm_map) do
     updated_first = List.replace_at(stack_args, 0, List.last(stack_args))
