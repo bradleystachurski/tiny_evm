@@ -9,7 +9,7 @@ defmodule TinyEVMTest do
   @tests [
 #    "vmArithmeticTest/mulmod1_overflow4.json",
     "vmPushDupSwapTest/swap14.json",
-    "vmBitwiseLogicOperation/xor2.json"
+#    "vmBitwiseLogicOperation/xor2.json"
   ]
 
   test "runs common test" do

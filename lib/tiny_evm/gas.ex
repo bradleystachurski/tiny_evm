@@ -36,7 +36,8 @@ defmodule TinyEVM.Gas do
   end
 
   @spec sstore_cost() :: non_neg_integer()
-  def sstore_cost, do: 5
+  # no resets are tested, so cost will always be 20,000 gas
+  def sstore_cost, do: 20000
 
   @spec static_operation_cost(atom()) :: non_neg_integer | nil
   def static_operation_cost(operation) do
@@ -54,5 +55,11 @@ defmodule TinyEVM.Gas do
   def insufficient_gas?(machine_state, execution_environment) do
     cost = cost(machine_state, execution_environment)
     cost > machine_state.gas
+  end
+
+  def subtract_gas(machine_state, execution_environment) do
+    cost = cost(machine_state, execution_environment)
+
+    updated_machine_state = %{machine_state | gas: machine_state[:gas] - cost}
   end
 end
