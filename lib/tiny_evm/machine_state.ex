@@ -6,6 +6,8 @@ defmodule TinyEVM.MachineState do
 
   alias TinyEVM.{Stack, MachineState, MachineCode.Metadata}
 
+  @behaviour Access
+
   defstruct gas: 0,
             program_counter: 0,
             memory_contents: <<>>,
@@ -59,5 +61,12 @@ defmodule TinyEVM.MachineState do
   def move_program_counter(machine_state, operation) do
     next_position = machine_state.program_counter + operation.machine_code_offset + 1
     %{machine_state | program_counter: next_position}
+  end
+
+  @spec fetch(t(), term()) :: {:ok, term()} | :error
+  def fetch(machine_state, key) do
+    machine_state
+    |> Map.from_struct()
+    |> Map.fetch(key)
   end
 end
