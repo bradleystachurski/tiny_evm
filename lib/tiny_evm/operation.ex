@@ -121,10 +121,6 @@ defmodule TinyEVM.Operation do
   # TODO: potentially change `merge_state` to be handled within the operation
   @spec merge_state(op_result(), MachineState.t(), ExecutionEnvironment.t(), WorldState.t()) ::
           {WorldState.t(), MachineState.t(), ExecutionEnvironment.t()}
-  def merge_state(:noop, machine_state, execution_environment, world_state) do
-    {world_state, machine_state, execution_environment}
-  end
-
   def merge_state(op_result = %{}, machine_state, execution_environment, world_state) do
     next_world_state = op_result[:world_state] || world_state
     base_machine_state = op_result[:machine_state] || machine_state
