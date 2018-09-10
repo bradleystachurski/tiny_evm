@@ -19,7 +19,6 @@ defmodule TinyEVM do
   alias Utils
 
   @type gas :: non_neg_integer()
-  @type output :: binary() | :failed
 
   @doc"""
   The entry point for the TinyEVM Execution Model, described in
@@ -49,7 +48,7 @@ defmodule TinyEVM do
     # setting permission for state modificaiton to true for this implementation
     execution_environment = %ExecutionEnvironment{address: address, machine_code: code, permission: true}
 
-    {world_state_prime, machine_state_prime, _output} = execution_xi(world_state, machine_state, execution_environment)
+    {world_state_prime, machine_state_prime} = execution_xi(world_state, machine_state, execution_environment)
     {machine_state_prime.gas, world_state_prime}
   end
 
@@ -71,11 +70,10 @@ defmodule TinyEVM do
 
     - `world_state_prime`: The resultant EVM account state after recursive execution.
     - `machine_state_prime`:
-    - `output`:
   """
-  @spec execution_xi(WorldState.t(), MachineState.t(), ExecutionEnvironment.t()) :: {WorldState.t(), MachineState.t(), output}
+  @spec execution_xi(WorldState.t(), MachineState.t(), ExecutionEnvironment.t()) :: {WorldState.t(), MachineState.t()}
   def execution_xi(world_state, machine_state, execution_environment) do
-    {world_state_prime, machine_state_prime, output} =
+    {world_state_prime, machine_state_prime} =
       recursive_execution_chi(world_state, machine_state, execution_environment, {world_state, machine_state, execution_environment})
   end
 
@@ -112,7 +110,7 @@ defmodule TinyEVM do
           {WorldState.t(),
             MachineState.t(),
             ExecutionEnvironment.t()}
-        ) :: {WorldState.t(), MachineState.t(), output}
+        ) :: {WorldState.t(), MachineState.t()}
   def recursive_execution_chi(
         world_state,
         machine_state,
@@ -121,21 +119,17 @@ defmodule TinyEVM do
           original_machine_state,
           original_execution_environment}
       ) do
-    case exceptional_halt_state?(machine_state, execution_environment) do
-      true ->
-        {original_world_state, original_machine_state, original_execution_environment, :failed}
+    if exceptional_halt_state?(machine_state, execution_environment) do
+      {original_world_state, original_machine_state}
+    else
+      {world_state_n, machine_state_n, execution_environment_n} =
+        cycle(world_state, machine_state, execution_environment)
 
-      false ->
-        {world_state_n, machine_state_n, execution_environment_n} =
-          cycle(world_state, machine_state, execution_environment)
-
-        case normal_halt_state?(machine_state_n, execution_environment_n) do
-          false ->
-            recursive_execution_chi(world_state_n, machine_state_n, execution_environment_n, {original_world_state, original_machine_state, original_execution_environment})
-
-          {true, output} ->
-            {world_state_n, machine_state_n, output}
-        end
+      if normal_halt_state?(machine_state_n, execution_environment_n) do
+        {world_state_n, machine_state_n}
+      else
+        recursive_execution_chi(world_state_n, machine_state_n, execution_environment_n, {original_world_state, original_machine_state, original_execution_environment})
+      end
     end
   end
 
@@ -189,12 +183,8 @@ defmodule TinyEVM do
     This implementation doesn't test RETURN, REVERT, STOP, or SELFDESTRUCT opcodes,
     so H_return has been omitted.
   """
-  @spec normal_halt_state?(MachineState.t(), ExecutionEnvironment.t()) :: boolean() | {boolean(), output}
+  @spec normal_halt_state?(MachineState.t(), ExecutionEnvironment.t()) :: boolean()
   def normal_halt_state?(machine_state, execution_environment) do
-    if machine_state.program_counter >= byte_size(execution_environment.machine_code) do
-      {true, machine_state.last_return_data}
-    else
-      false
-    end
+    machine_state.program_counter >= byte_size(execution_environment.machine_code)
   end
 end
