@@ -41,14 +41,10 @@ defmodule TinyEVM.Gas do
 
   @spec static_operation_cost(atom()) :: non_neg_integer | nil
   def static_operation_cost(operation) do
-    fee_schedules = Map.keys(@fee_schedule)
-
-    fee_list =
-      for group <- fee_schedules,
-          operation in @fee_schedule[group].operations,
-          do: @fee_schedule[group].value
-
-    List.first(fee_list)
+    gas_group = Enum.find(Map.keys(@fee_schedule), fn x ->
+      Enum.member?(@fee_schedule[x][:operations], operation)
+    end)
+    @fee_schedule[gas_group][:value]
   end
 
   @spec insufficient_gas?(MachineState.t(), ExecutionEnvironment.t()) :: boolean()
