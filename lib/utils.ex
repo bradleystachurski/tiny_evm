@@ -1,6 +1,6 @@
 defmodule Utils do
   @moduledoc"""
-  Utility functions for the project
+  Utility functions for the project.
   """
 
   alias TinyEVM.{MachineState, ExecutionEnvironment, Operation.Metadata}

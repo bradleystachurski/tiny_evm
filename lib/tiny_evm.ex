@@ -8,7 +8,7 @@ defmodule TinyEVM do
     Ethereum Virtual Machine, supporting only a limited subset
     of the functionality described in the Yellow Paper. The Execution
     Model returns **only** the remaining gas and account storage
-    for the Ethereum Common VM Test in question.
+    for the Ethereum Common VM Tests used in the Tiny EVM test assignment.
 
     The accrued substate, `A`, has been omitted from this implementation
     because the tests in question only touch a single account without any
@@ -19,7 +19,6 @@ defmodule TinyEVM do
   alias Utils
 
   @type gas :: non_neg_integer()
-  @type storage :: %{optional(String.t()) => map()}
   @type output :: binary() | :failed
 
   @doc"""
@@ -57,7 +56,22 @@ defmodule TinyEVM do
   @doc"""
   `Ξ` function defined in Section 9.4 of the Yellow Paper.
 
-  This implmentation
+  ## Note
+
+    This implementation forgoes the substate `A` defined in the Yellow Paper and
+    is omitted from the `Ξ` function and all sub-functions.
+
+  ## Paramaters
+
+    - `world_state`: EVM account state prior to the execution model running.
+    - `machine_state`: MachineState prior to the execution model running.
+    - `execution_environment`: ExecutionEnvironment prior to the execution model running.
+
+  ## Returns
+
+    - `world_state_prime`: The resultant EVM account state after recursive execution.
+    - `machine_state_prime`:
+    - `output`:
   """
   @spec execution_xi(WorldState.t(), MachineState.t(), ExecutionEnvironment.t()) :: {WorldState.t(), MachineState.t(), output}
   def execution_xi(world_state, machine_state, execution_environment) do
@@ -66,7 +80,30 @@ defmodule TinyEVM do
   end
 
   @doc"""
-  Modified `X`. More docs to come...
+  `X` function defined in Section 9.4 of the Yellow Paper.
+
+  Recursively runs the Execution Cycle, `O`, until the machine
+  reaches either a normal or exceptional halting state. The machine
+  is guaranteed to reach a halting state due to the requirement of
+  gas for each cycle.
+
+  ## Paramaters
+
+    - `world_state`: The world state prior to running a cyle in the VM.
+    - `machine_state`: The machine state prior to running a cycle in the VM.
+    - `execution_environment`: The execution environment prior to running
+      a cycle in the VM.
+    - `original_world_state`: The world state passed in by the `Ξ` function. Used
+      for reverting any state changes in the event of an exceptional halt.
+    - `original_machine_state:`: The machine state passed in by the `Ξ` function. Used
+      for reverting any state changes in the event of an exceptional halt.
+    - `original_execution_environment:`: The execution environment passed in by the `Ξ` function. Used
+      for reverting any state changes in the event of an exceptional halt.
+
+
+  ## Returns
+
+    - `
   """
   @spec recursive_execution_chi(
           WorldState.t(),
@@ -147,10 +184,13 @@ defmodule TinyEVM do
 
   @doc"""
   The Normal Halting function, `H`, described in Section 9.4.4 of the Yellow Paper.
+
+  ## Note
+    This implementation doesn't test RETURN, REVERT, STOP, or SELFDESTRUCT opcodes,
+    so H_return has been omitted.
   """
   @spec normal_halt_state?(MachineState.t(), ExecutionEnvironment.t()) :: boolean() | {boolean(), output}
   def normal_halt_state?(machine_state, execution_environment) do
-    # placeholder for now
     if machine_state.program_counter >= byte_size(execution_environment.machine_code) do
       {true, machine_state.last_return_data}
     else
