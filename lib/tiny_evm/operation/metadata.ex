@@ -10,7 +10,6 @@ defmodule TinyEVM.Operation.Metadata do
             args: [],
             inputs: nil,
             outputs: nil,
-            description: "",
             machine_code_offset: 0
 
   @type t :: %__MODULE__{
@@ -20,7 +19,6 @@ defmodule TinyEVM.Operation.Metadata do
           args: [],
           inputs: non_neg_integer(),
           outputs: non_neg_integer(),
-          description: String.t(),
           machine_code_offset: non_neg_integer() | nil
         }
 end

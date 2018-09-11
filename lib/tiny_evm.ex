@@ -28,7 +28,7 @@ defmodule TinyEVM do
 
     - `address`: The address any storage modifcations are applied to.
     - `gas`: Total gas units sent for this "transaction" (not actually
-      a formal transaction, however a proxy for a transaction in the TinyEVM).
+      a formal transaction, however an abstraction for a transaction in the TinyEVM).
     - `code`: The binary of the EVM machine code (meant to represent the
       contract code that would normally be associated with the address).
 
@@ -39,7 +39,14 @@ defmodule TinyEVM do
 
   ## Examples
 
-    # Some pretty cool examples go here
+    iex> TinyEVM.execution_model_entry("0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6", 100000, <<96, 14, 96, 13, 96, 12, 96, 11, 96, 10, 96, 9, 96, 8, 96, 7, 96, 6, 96, 5, 96, 4, 96, 3, 96, 2, 96, 1, 96, 3, 157, 85>>)
+    {79952, %{"0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6" => %{14 => 1}}}
+
+    iex> TinyEVM.execution_model_entry("0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6", 1000000, <<96, 5, 96, 2, 127, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 9, 96, 0, 85>>)
+    {979980, %{"0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6" => %{0 => 3}}}
+
+    iex> TinyEVM.execution_model_entry("0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6", 100000, <<96, 1, 96, 3, 24, 96, 0, 85>>)
+    {79988, %{"0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6" => %{0 => 2}}}
   """
   @spec execution_model_entry(String.t(), gas, binary()) :: {gas, WorldState.t()}
   def execution_model_entry(address, gas, code) do
@@ -69,12 +76,23 @@ defmodule TinyEVM do
   ## Returns
 
     - `world_state_prime`: The resultant EVM account state after recursive execution.
-    - `machine_state_prime`:
+    - `machine_state_prime`: The resultant machine state after recursive execution.
+
+  ## Examples
+    iex> TinyEVM.execution_xi(%{}, %TinyEVM.MachineState{gas: 1000000}, %TinyEVM.ExecutionEnvironment{address: "0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6", machine_code: <<96, 5, 96, 2, 127, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 9, 96, 0, 85>>, permission: true})
+    {%{"0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6" => %{0 => 3}},
+    %{
+       gas: 979980,
+       last_return_data: 0,
+       memory_contents: "",
+       program_counter: 41,
+       stack: [],
+       words_in_memory: 0
+    }}
   """
   @spec execution_xi(WorldState.t(), MachineState.t(), ExecutionEnvironment.t()) :: {WorldState.t(), MachineState.t()}
   def execution_xi(world_state, machine_state, execution_environment) do
-    {world_state_prime, machine_state_prime} =
-      recursive_execution_chi(world_state, machine_state, execution_environment, {world_state, machine_state, execution_environment})
+    recursive_execution_chi(world_state, machine_state, execution_environment, {world_state, machine_state, execution_environment})
   end
 
   @doc"""
@@ -84,24 +102,6 @@ defmodule TinyEVM do
   reaches either a normal or exceptional halting state. The machine
   is guaranteed to reach a halting state due to the requirement of
   gas for each cycle.
-
-  ## Paramaters
-
-    - `world_state`: The world state prior to running a cyle in the VM.
-    - `machine_state`: The machine state prior to running a cycle in the VM.
-    - `execution_environment`: The execution environment prior to running
-      a cycle in the VM.
-    - `original_world_state`: The world state passed in by the `Ξ` function. Used
-      for reverting any state changes in the event of an exceptional halt.
-    - `original_machine_state:`: The machine state passed in by the `Ξ` function. Used
-      for reverting any state changes in the event of an exceptional halt.
-    - `original_execution_environment:`: The execution environment passed in by the `Ξ` function. Used
-      for reverting any state changes in the event of an exceptional halt.
-
-
-  ## Returns
-
-    - `
   """
   @spec recursive_execution_chi(
           WorldState.t(),
@@ -134,7 +134,7 @@ defmodule TinyEVM do
   end
 
   @doc"""
-  The Execution Cycle, defined as `O` in Section 9.4 of the Yellow Paper.
+  The Execution Cycle, defined as `O` in Section 9.5 of the Yellow Paper.
   """
   @spec cycle(WorldState.t(), MachineState.t(), ExecutionEnvironment.t()) :: {WorldState.t(), MachineState.t(), ExecutionEnvironment.t()}
   def cycle(world_state, machine_state, execution_environment) do
@@ -148,32 +148,24 @@ defmodule TinyEVM do
   end
 
   @doc"""
-  `Z` function in Yellow Paper. More docs to come...
-
-  If this function evaluates to true, any changes are discarded except for gas used.
+  Exceptional Halting function, defined as `Z` in Section 9.4.2 of the Yellow Paper.
   """
   @spec exceptional_halt_state?(MachineState.t(), ExecutionEnviornment.t()) :: boolean()
   def exceptional_halt_state?(machine_state, execution_environment) do
-    operation =
-      Operation.get_operation_at(execution_environment.machine_code, machine_state.program_counter)
-      |> Operation.metadata()
+    operation = Operation.get_operation_at(execution_environment.machine_code, machine_state.program_counter)
+    |> Operation.metadata()
 
-      cond do
-        Gas.insufficient_gas?(machine_state, execution_environment) -> true
+    is_exceptional?(operation, machine_state, execution_environment)
+  end
 
-        Utils.invalid_instruction?(operation) -> true
-
-        Utils.insufficient_stack_items?(operation, machine_state) -> true
-
-        # Omitting check for JUMP/JUMPI since the opcodes aren't implemented
-
-        Utils.will_exceed_stack_size?(operation, machine_state) -> true
-
-        # Only state modificaiton opcode implemented is sstore, no need to check for others
-        !execution_environment.permission && operation.mnemonic == :sstore -> true
-
-        true -> false
-      end
+  @spec is_exceptional?(Metadata.t(), MachineState.t(), ExecutionEnvironment.t()) :: boolean()
+  defp is_exceptional?(operation, machine_state, execution_environment) do
+    Gas.insufficient_gas?(machine_state, execution_environment) ||
+    Utils.invalid_instruction?(operation) ||
+    Utils.insufficient_stack_items?(operation, machine_state) ||
+    # Omitting checks for JUMP/JUMPI since opcodes aren't implemented
+    Utils.will_exceed_stack_size?(operation, machine_state) ||
+    (!execution_environment.permission && operation.mnemonic == :sstore)
   end
 
   @doc"""

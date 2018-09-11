@@ -3,7 +3,7 @@ defmodule TinyEVM.Gas do
   Gas stuff
   """
 
-  alias TinyEVM.{MachineState, ExecutionEnvironment, MachineCode, Operation}
+  alias TinyEVM.{MachineState, ExecutionEnvironment, MachineCode}
 
   @fee_schedule %{
     g_zero: %{
@@ -24,15 +24,19 @@ defmodule TinyEVM.Gas do
     }
   }
 
+  @doc"""
+  Calculates the cost to run the current operation.
+
+  ## Examples
+
+  """
   @spec cost(MachineState.t(), ExecutionEnvironment.t()) :: integer() | nil
   def cost(machine_state, execution_environment) do
     operation = MachineCode.current_operation(machine_state, execution_environment)
 
-    if operation.function == :sstore do
-      sstore_cost()
-    else
-      static_operation_cost(operation.function)
-    end
+    if operation.function == :sstore,
+       do: sstore_cost(),
+       else: static_operation_cost(operation.function)
   end
 
   @spec sstore_cost() :: non_neg_integer()
@@ -56,6 +60,6 @@ defmodule TinyEVM.Gas do
   def subtract_gas(machine_state, execution_environment) do
     cost = cost(machine_state, execution_environment)
 
-    updated_machine_state = %{machine_state | gas: machine_state[:gas] - cost}
+    %{machine_state | gas: machine_state[:gas] - cost}
   end
 end
