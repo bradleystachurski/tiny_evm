@@ -24,16 +24,14 @@ defmodule TinyEVM.Operation do
       mnemonic: :mulmod,
       function: :mulmod,
       inputs: 3,
-      outputs: 1,
-      description: "Modulo multiplication operation"
+      outputs: 1
     },
     0x18 => %Metadata{
       value: 0x18,
       mnemonic: :xor,
       function: :xor,
       inputs: 2,
-      outputs: 1,
-      description: "Bitwise XOR operation"
+      outputs: 1
     },
     0x55 => %Metadata{
       value: 0x55,
@@ -65,79 +63,38 @@ defmodule TinyEVM.Operation do
       mnemonic: :swap14,
       function: :swap_n,
       inputs: 15,
-      outputs: 15,
-      description: "Exchange the 1st and 15th stack items"
+      outputs: 15
     }
   }
 
+  @doc"""
+  Runs the given operation in the EVM, returning the updated `world_state`,
+  `machine_state`, and `execution_environment`.
+  """
   @spec run(WorldState.t(), Metadata.t(), MachineState.t(), ExecutionEnvironment.t()) ::
           {WorldState.t(), MachineState.t(), ExecutionEnvironment.t()}
   def run(world_state, operation, machine_state, execution_environment) do
-    {args, updated_machine_state} =
-      operation_args(operation, machine_state, execution_environment, world_state)
+    args = operation_args(operation, machine_state, execution_environment, world_state)
+    updated_vm_map = apply(__MODULE__, operation.function, args)
 
-    {world_state_n, machine_state_n, execution_environment_n} =
-      apply(__MODULE__, operation.function, args)
-      |> normalize_op_result(updated_machine_state.stack)
-      |> merge_state(updated_machine_state, execution_environment, world_state)
+    {updated_vm_map.world_state, updated_vm_map.machine_state, updated_vm_map.execution_environment}
   end
 
+  @doc"""
+  Reads the inputs for the given operation from the stack and returns a list of the relevant
+  operations for the opcode.
+  """
+  @spec operation_args(Metadata.t(), MachineState.t(), ExecutionEnvironment.t(), WorldState.t()) :: [...]
   def operation_args(operation, machine_state, execution_environment, world_state) do
     {stack_args, updated_machine_state} = MachineState.pop_n(machine_state, operation.inputs)
 
     vm_map = %{
       world_state: world_state,
-      stack: updated_machine_state.stack,
       machine_state: updated_machine_state,
       execution_environment: execution_environment
     }
 
-    args = operation.args ++ [stack_args, vm_map]
-
-    {args, updated_machine_state}
-  end
-
-  @spec normalize_op_result(integer() | list(integer()) | op_result(), Stack.t()) :: op_result()
-  def normalize_op_result(op_result, updated_stack) do
-    if is_integer(op_result) || is_list(op_result) || is_binary(op_result) do
-      last_return_data = Utils.encode_val(op_result)
-
-      last_return_data_normalized =
-        if is_list(last_return_data) do
-          last_return_data
-        else
-          [last_return_data]
-        end
-
-      %{
-        stack: Stack.push(updated_stack, last_return_data),
-        last_return_data: last_return_data_normalized
-      }
-    else
-      op_result
-    end
-  end
-
-  # TODO: potentially change `merge_state` to be handled within the operation
-  @spec merge_state(op_result(), MachineState.t(), ExecutionEnvironment.t(), WorldState.t()) ::
-          {WorldState.t(), MachineState.t(), ExecutionEnvironment.t()}
-  def merge_state(op_result = %{}, machine_state, execution_environment, world_state) do
-    next_world_state = op_result[:world_state] || world_state
-    base_machine_state = op_result[:machine_state] || machine_state
-
-    next_machine_state =
-      if op_result[:stack],
-        do: %{base_machine_state | stack: op_result[:stack]},
-        else: base_machine_state
-
-    next_machine_state =
-      if op_result[:last_return_data],
-        do: %{next_machine_state | last_return_data: op_result[:last_return_data]},
-        else: %{next_machine_state | last_return_data: []}
-
-    next_execution_environment = op_result[:execution_environment] || execution_environment
-
-    {next_world_state, next_machine_state, next_execution_environment}
+    operation.args ++ [stack_args, vm_map]
   end
 
   @spec get_operation_at(MachineCode.t(), MachineState.program_counter()) :: byte()
@@ -150,17 +107,22 @@ defmodule TinyEVM.Operation do
     Map.get(@operations, opcode)
   end
 
-  def push_n(n, _args, %{
-        machine_state: machine_state,
-        execution_environment: %{machine_code: machine_code}
-      }) do
-    machine_code
-    |> read_memory(machine_state.program_counter + 1, n)
-    |> :binary.decode_unsigned()
+  @doc """
+  Implements `PUSH1` through `PUSH32` opcodes and returns the updated `vm_map`.
+  """
+  @spec push_n(non_neg_integer(), stack_args(), map()) :: map()
+  def push_n(n, _stack_args, vm_map) do
+    operation_result =
+      vm_map.execution_environment.machine_code
+      |> read_memory(vm_map.machine_state.program_counter + 1, n)
+      |> :binary.decode_unsigned()
+
+    put_in(vm_map.machine_state.last_return_data, operation_result)
+    |> put_in([:machine_state, :stack], Stack.push(vm_map.machine_state.stack, operation_result))
   end
 
   @doc """
-  `c` defined in Push Operations in Appendix H
+  `c` defined in Push Operations in Appendix H of the Yellow Paper.
   """
   def read_memory(memory, offset, bytes) do
     if memory == nil || offset > byte_size(memory) do
@@ -176,27 +138,55 @@ defmodule TinyEVM.Operation do
     end
   end
 
-  def inputs(operation, machine_state) do
-    Stack.peep_n(machine_state.stack, operation.inputs)
+  @doc"""
+  Implements the `MULMOD` opcode and updates the `vm_map`.
+  """
+  @spec mulmod(stack_args(), map()) :: map()
+  def mulmod([_s_0, _s_1, s_2], vm_map) when s_2 == 0 do
+    operation_result = 0
+
+    put_in(vm_map.machine_state.last_return_data, operation_result)
+    |> put_in([:machine_state, :stack], Stack.push(vm_map.machine_state.stack, operation_result))
   end
 
-  @spec mulmod(stack_args(), map()) :: op_result()
-  def mulmod([_s_0, _s_1, s_2], _vm_map) when s_2 == 0, do: 0
-  def mulmod([s_0, s_1, s_2], _vm_map), do: rem(s_0 * s_1, s_2)
+  def mulmod([s_0, s_1, s_2], vm_map) do
+    operation_result = rem(s_0 * s_1, s_2)
 
-  def xor([s_0, s_1], _vm_map), do: bxor(s_0, s_1)
+    put_in(vm_map.machine_state.last_return_data, operation_result)
+    |> put_in([:machine_state, :stack], Stack.push(vm_map.machine_state.stack, operation_result))
+  end
 
-  def swap_n(stack_args, _vm_map) do
+  @doc"""
+  Implements the `XOR` opcode and updates the `vm_map`.
+  """
+  @spec xor(stack_args(), map()) :: map()
+  def xor([s_0, s_1], vm_map) do
+    operation_result = bxor(s_0, s_1)
+
+    put_in(vm_map.machine_state.last_return_data, operation_result)
+    |> put_in([:machine_state, :stack], Stack.push(vm_map.machine_state.stack, operation_result))
+  end
+
+  @doc"""
+  Implments the `SWAP1` through `SWAP16` opcodes and returns the updated `vm_map`.
+  """
+  def swap_n(stack_args, vm_map) do
     updated_first = List.replace_at(stack_args, 0, List.last(stack_args))
-    List.replace_at(updated_first, -1, List.first(stack_args))
+    operation_result = List.replace_at(updated_first, -1, List.first(stack_args))
+
+    put_in(vm_map.machine_state.last_return_data, operation_result)
+    |> put_in([:machine_state, :stack], Stack.push(vm_map.machine_state.stack, operation_result))
   end
 
-  def sstore([key, value], %{
-        world_state: world_state,
-        execution_environment: execution_environmnet
-      }) do
+  @doc"""
+  Implements the `SSTORE` opcode and returns the updated `vm_map`.
+
+  Note: This implementation doesn't need to handle refunds, however this could
+  be extneded with the addition of Substate.
+  """
+  @spec sstore(stack_args(), map()) :: map()
+  def sstore([key, value], vm_map) do
     account_state = %{key => value}
-    updated_world_state = Map.put(world_state, execution_environmnet.address, account_state)
-    %{world_state: updated_world_state}
+    put_in(vm_map.world_state[vm_map.execution_environment.address], account_state)
   end
 end
