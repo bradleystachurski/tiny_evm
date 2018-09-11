@@ -29,4 +29,39 @@ defmodule TinyEVMTest do
 
     EthTest.read(file_path)
   end
+
+  test "runs normal-halting recursive_execution_chi" do
+    world_state = %{}
+    machine_state = %TinyEVM.MachineState{gas: 1_000_000}
+
+    execution_environment = %TinyEVM.ExecutionEnvironment{
+      address: "0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6",
+      machine_code:
+        <<96, 5, 96, 2, 127, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 9, 96, 0, 85>>,
+      permission: true
+    }
+
+    {updated_world_state, updated_machine_state} =
+      TinyEVM.recursive_execution_chi(
+        world_state,
+        machine_state,
+        execution_environment,
+        {world_state, machine_state, execution_environment}
+      )
+
+    expected_world_state = %{"0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6" => %{0 => 3}}
+
+    expected_machine_state = %{
+      gas: 979_980,
+      program_counter: 41,
+      stack: [],
+      last_return_data: 0,
+      memory_contents: "",
+      words_in_memory: 0
+    }
+
+    assert expected_world_state == updated_world_state
+    assert expected_machine_state == updated_machine_state
+  end
 end
