@@ -1,5 +1,5 @@
 defmodule Utils do
-  @moduledoc"""
+  @moduledoc """
   Utility functions for the project.
   """
 
@@ -9,7 +9,7 @@ defmodule Utils do
 
   @max_stack_size 1024
 
-  @doc"""
+  @doc """
   Checks if the operation instruction is invalid, defined in Section
   9.4.2 of the Yellow Paper.
 
@@ -20,7 +20,7 @@ defmodule Utils do
 
   def invalid_instruction?(_), do: false
 
-  @doc"""
+  @doc """
   Checks if there are insufficient stack items, defined in Section 9.4.2
   of the Yellow Paper.
 
@@ -31,7 +31,7 @@ defmodule Utils do
     operation.inputs > length(machine_state.stack)
   end
 
-  @doc"""
+  @doc """
   Checks if the new stack size will exceed the max allowed stack size, defined
   in section 9.4.2 of the Yellow Paper.
 

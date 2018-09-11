@@ -1,5 +1,5 @@
 defmodule TinyEVM.MachineState do
-  @moduledoc"""
+  @moduledoc """
   The machine state of the EVM, `μ`, as defined in Section
   9.4.1 in the Yellow Paper.
   """
@@ -17,7 +17,7 @@ defmodule TinyEVM.MachineState do
 
   @type program_counter :: integer()
 
-  @typedoc"""
+  @typedoc """
   From Yellow Paper:
 
     `μ` is defined as the tuple `(g, pc, m, i, s)` where
@@ -28,15 +28,15 @@ defmodule TinyEVM.MachineState do
       - `s`: stack contents
   """
   @type t :: %__MODULE__{
-               gas: non_neg_integer(),
-               program_counter: program_counter,
-               memory_contents: binary(),
-               words_in_memory: integer(),
-               stack: Stack.t(),
-               last_return_data: [integer()] | []
-             }
+          gas: non_neg_integer(),
+          program_counter: program_counter,
+          memory_contents: binary(),
+          words_in_memory: integer(),
+          stack: Stack.t(),
+          last_return_data: [integer()] | []
+        }
 
-  @doc"""
+  @doc """
   Removes and returns `n` items from the stack and updates the
   machine state.
 

@@ -67,7 +67,7 @@ defmodule TinyEVM.Operation do
     }
   }
 
-  @doc"""
+  @doc """
   Runs the given operation in the EVM, returning the updated `world_state`,
   `machine_state`, and `execution_environment`.
   """
@@ -77,14 +77,16 @@ defmodule TinyEVM.Operation do
     args = operation_args(operation, machine_state, execution_environment, world_state)
     updated_vm_map = apply(__MODULE__, operation.function, args)
 
-    {updated_vm_map.world_state, updated_vm_map.machine_state, updated_vm_map.execution_environment}
+    {updated_vm_map.world_state, updated_vm_map.machine_state,
+     updated_vm_map.execution_environment}
   end
 
-  @doc"""
+  @doc """
   Reads the inputs for the given operation from the stack and returns a list of the relevant
   operations for the opcode.
   """
-  @spec operation_args(Metadata.t(), MachineState.t(), ExecutionEnvironment.t(), WorldState.t()) :: [...]
+  @spec operation_args(Metadata.t(), MachineState.t(), ExecutionEnvironment.t(), WorldState.t()) ::
+          [...]
   def operation_args(operation, machine_state, execution_environment, world_state) do
     {stack_args, updated_machine_state} = MachineState.pop_n(machine_state, operation.inputs)
 
@@ -138,7 +140,7 @@ defmodule TinyEVM.Operation do
     end
   end
 
-  @doc"""
+  @doc """
   Implements the `MULMOD` opcode and updates the `vm_map`.
   """
   @spec mulmod(stack_args(), map()) :: map()
@@ -156,7 +158,7 @@ defmodule TinyEVM.Operation do
     |> put_in([:machine_state, :stack], Stack.push(vm_map.machine_state.stack, operation_result))
   end
 
-  @doc"""
+  @doc """
   Implements the `XOR` opcode and updates the `vm_map`.
   """
   @spec xor(stack_args(), map()) :: map()
@@ -167,7 +169,7 @@ defmodule TinyEVM.Operation do
     |> put_in([:machine_state, :stack], Stack.push(vm_map.machine_state.stack, operation_result))
   end
 
-  @doc"""
+  @doc """
   Implments the `SWAP1` through `SWAP16` opcodes and returns the updated `vm_map`.
   """
   def swap_n(stack_args, vm_map) do
@@ -178,7 +180,7 @@ defmodule TinyEVM.Operation do
     |> put_in([:machine_state, :stack], Stack.push(vm_map.machine_state.stack, operation_result))
   end
 
-  @doc"""
+  @doc """
   Implements the `SSTORE` opcode and returns the updated `vm_map`.
 
   Note: This implementation doesn't need to handle refunds, however this could

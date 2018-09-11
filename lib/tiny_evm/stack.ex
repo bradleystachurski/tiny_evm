@@ -1,5 +1,5 @@
 defmodule TinyEVM.Stack do
-  @moduledoc"""
+  @moduledoc """
   Stack stuff
   """
 

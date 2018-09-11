@@ -1,5 +1,5 @@
 defmodule TinyEVM.MachineCode do
-  @moduledoc"""
+  @moduledoc """
   The Machine Code to run in the EVM.
   """
 
@@ -7,8 +7,8 @@ defmodule TinyEVM.MachineCode do
   alias TinyEVM.Operation.Metadata
 
   @type t :: binary()
-  
-  @doc"""
+
+  @doc """
   `w` from the Yellow Paper
   """
   @spec current_operation(MachineState.t(), ExecutionEnvironment.t()) :: Metadata.t()

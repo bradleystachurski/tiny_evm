@@ -17,7 +17,7 @@ defmodule TinyEVM.ExecutionEnvironment do
             call_depth: nil,
             permission: false
 
-  @typedoc"""
+  @typedoc """
   From Yellow Paper:
 
     `I` is defined as:

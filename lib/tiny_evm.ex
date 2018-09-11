@@ -1,5 +1,5 @@
 defmodule TinyEVM do
-  @moduledoc"""
+  @moduledoc """
   A simplified version of the Ethereum Virtual Machine.
 
   ## Note
@@ -20,7 +20,7 @@ defmodule TinyEVM do
 
   @type gas :: non_neg_integer()
 
-  @doc"""
+  @doc """
   The entry point for the TinyEVM Execution Model, described in
   Section 9 of the Yellow Paper.
 
@@ -53,13 +53,19 @@ defmodule TinyEVM do
     world_state = %{}
     machine_state = %MachineState{gas: gas}
     # setting permission for state modificaiton to true for this implementation
-    execution_environment = %ExecutionEnvironment{address: address, machine_code: code, permission: true}
+    execution_environment = %ExecutionEnvironment{
+      address: address,
+      machine_code: code,
+      permission: true
+    }
 
-    {world_state_prime, machine_state_prime} = execution_xi(world_state, machine_state, execution_environment)
+    {world_state_prime, machine_state_prime} =
+      execution_xi(world_state, machine_state, execution_environment)
+
     {machine_state_prime.gas, world_state_prime}
   end
 
-  @doc"""
+  @doc """
   `Ξ` function defined in Section 9.4 of the Yellow Paper.
 
   ## Note
@@ -90,12 +96,18 @@ defmodule TinyEVM do
        words_in_memory: 0
     }}
   """
-  @spec execution_xi(WorldState.t(), MachineState.t(), ExecutionEnvironment.t()) :: {WorldState.t(), MachineState.t()}
+  @spec execution_xi(WorldState.t(), MachineState.t(), ExecutionEnvironment.t()) ::
+          {WorldState.t(), MachineState.t()}
   def execution_xi(world_state, machine_state, execution_environment) do
-    recursive_execution_chi(world_state, machine_state, execution_environment, {world_state, machine_state, execution_environment})
+    recursive_execution_chi(
+      world_state,
+      machine_state,
+      execution_environment,
+      {world_state, machine_state, execution_environment}
+    )
   end
 
-  @doc"""
+  @doc """
   `X` function defined in Section 9.4 of the Yellow Paper.
 
   Recursively runs the Execution Cycle, `O`, until the machine
@@ -107,17 +119,13 @@ defmodule TinyEVM do
           WorldState.t(),
           MachineState.t(),
           ExecutionEnviornment.t(),
-          {WorldState.t(),
-            MachineState.t(),
-            ExecutionEnvironment.t()}
+          {WorldState.t(), MachineState.t(), ExecutionEnvironment.t()}
         ) :: {WorldState.t(), MachineState.t()}
   def recursive_execution_chi(
         world_state,
         machine_state,
         execution_environment,
-        {original_world_state,
-          original_machine_state,
-          original_execution_environment}
+        {original_world_state, original_machine_state, original_execution_environment}
       ) do
     if exceptional_halt_state?(machine_state, execution_environment) do
       {original_world_state, original_machine_state}
@@ -125,50 +133,81 @@ defmodule TinyEVM do
       {world_state_n, machine_state_n, execution_environment_n} =
         cycle(world_state, machine_state, execution_environment)
 
-      if normal_halt_state?(machine_state_n, execution_environment_n) do
-        {world_state_n, machine_state_n}
-      else
-        recursive_execution_chi(world_state_n, machine_state_n, execution_environment_n, {original_world_state, original_machine_state, original_execution_environment})
-      end
+      normal_halt_or_cycle(
+        world_state_n,
+        machine_state_n,
+        execution_environment_n,
+        {original_world_state, original_machine_state, original_execution_environment}
+      )
     end
   end
 
-  @doc"""
+  @spec normal_halt_or_cycle(
+          WorldState.t(),
+          MachineState.t(),
+          ExecutionEnvironment.t(),
+          {WorldState.t(), MachineState.t(), ExecutionEnvironment.t()}
+        ) :: {WorldState.t(), MachineState.t()}
+  defp normal_halt_or_cycle(
+         world_state,
+         machine_state,
+         execution_environment,
+         {original_world_state, original_machine_state, original_execution_environment}
+       ) do
+    if normal_halt_state?(machine_state, execution_environment),
+      do: {world_state, machine_state},
+      else:
+        recursive_execution_chi(
+          world_state,
+          machine_state,
+          execution_environment,
+          {original_world_state, original_machine_state, original_execution_environment}
+        )
+  end
+
+  @doc """
   The Execution Cycle, defined as `O` in Section 9.5 of the Yellow Paper.
   """
-  @spec cycle(WorldState.t(), MachineState.t(), ExecutionEnvironment.t()) :: {WorldState.t(), MachineState.t(), ExecutionEnvironment.t()}
+  @spec cycle(WorldState.t(), MachineState.t(), ExecutionEnvironment.t()) ::
+          {WorldState.t(), MachineState.t(), ExecutionEnvironment.t()}
   def cycle(world_state, machine_state, execution_environment) do
     operation = MachineCode.current_operation(machine_state, execution_environment)
     machine_state_less_gas = Gas.subtract_gas(machine_state, execution_environment)
 
-    {world_state_n, machine_state_n, execution_environment_n} = Operation.run(world_state, operation, machine_state_less_gas, execution_environment)
+    {world_state_n, machine_state_n, execution_environment_n} =
+      Operation.run(world_state, operation, machine_state_less_gas, execution_environment)
+
     final_machine_state = MachineState.move_program_counter(machine_state_n, operation)
 
     {world_state_n, final_machine_state, execution_environment_n}
   end
 
-  @doc"""
+  @doc """
   Exceptional Halting function, defined as `Z` in Section 9.4.2 of the Yellow Paper.
   """
   @spec exceptional_halt_state?(MachineState.t(), ExecutionEnviornment.t()) :: boolean()
   def exceptional_halt_state?(machine_state, execution_environment) do
-    operation = Operation.get_operation_at(execution_environment.machine_code, machine_state.program_counter)
-    |> Operation.metadata()
+    operation =
+      Operation.get_operation_at(
+        execution_environment.machine_code,
+        machine_state.program_counter
+      )
+      |> Operation.metadata()
 
     is_exceptional?(operation, machine_state, execution_environment)
   end
 
   @spec is_exceptional?(Metadata.t(), MachineState.t(), ExecutionEnvironment.t()) :: boolean()
   defp is_exceptional?(operation, machine_state, execution_environment) do
-    Gas.insufficient_gas?(machine_state, execution_environment) ||
-    Utils.invalid_instruction?(operation) ||
-    Utils.insufficient_stack_items?(operation, machine_state) ||
     # Omitting checks for JUMP/JUMPI since opcodes aren't implemented
-    Utils.will_exceed_stack_size?(operation, machine_state) ||
-    (!execution_environment.permission && operation.mnemonic == :sstore)
+    Gas.insufficient_gas?(machine_state, execution_environment) ||
+      Utils.invalid_instruction?(operation) ||
+      Utils.insufficient_stack_items?(operation, machine_state) ||
+      Utils.will_exceed_stack_size?(operation, machine_state) ||
+      (!execution_environment.permission && operation.mnemonic == :sstore)
   end
 
-  @doc"""
+  @doc """
   The Normal Halting function, `H`, described in Section 9.4.4 of the Yellow Paper.
 
   ## Note

@@ -24,7 +24,7 @@ defmodule TinyEVM.Gas do
     }
   }
 
-  @doc"""
+  @doc """
   Calculates the cost to run the current operation.
 
   ## Examples
@@ -35,8 +35,8 @@ defmodule TinyEVM.Gas do
     operation = MachineCode.current_operation(machine_state, execution_environment)
 
     if operation.function == :sstore,
-       do: sstore_cost(),
-       else: static_operation_cost(operation.function)
+      do: sstore_cost(),
+      else: static_operation_cost(operation.function)
   end
 
   @spec sstore_cost() :: non_neg_integer()
@@ -45,9 +45,11 @@ defmodule TinyEVM.Gas do
 
   @spec static_operation_cost(atom()) :: non_neg_integer | nil
   def static_operation_cost(operation) do
-    gas_group = Enum.find(Map.keys(@fee_schedule), fn x ->
-      Enum.member?(@fee_schedule[x][:operations], operation)
-    end)
+    gas_group =
+      Enum.find(Map.keys(@fee_schedule), fn x ->
+        Enum.member?(@fee_schedule[x][:operations], operation)
+      end)
+
     @fee_schedule[gas_group][:value]
   end
 
