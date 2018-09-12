@@ -35,7 +35,6 @@ defmodule TinyEVM.MachineState do
           stack: Stack.t(),
           last_return_data: [integer()] | []
         }
-
   @doc """
   Removes and returns `n` items from the stack and updates the
   machine state.
@@ -77,6 +76,7 @@ defmodule TinyEVM.MachineState do
     |> Map.fetch(key)
   end
 
+  @spec get_and_update(t(), term(), fun()) :: {term(), t()}
   def get_and_update(data, key, function) do
     {get, updated_map} =
       data
