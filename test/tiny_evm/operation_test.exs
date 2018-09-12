@@ -69,5 +69,72 @@ defmodule TinyEVM.OperationTest do
       assert updated_machine_state == updated_vm_map.machine_state
       assert updated_execution_environment == updated_vm_map.execution_environment
     end
+
+    test "runs :xor opcode" do
+      world_state = %{}
+
+      operation = %TinyEVM.Operation.Metadata{
+        args: [],
+        function: :xor,
+        inputs: 2,
+        machine_code_offset: 0,
+        mnemonic: :xor,
+        outputs: 1,
+        value: 24
+      }
+
+      machine_state = %TinyEVM.MachineState{
+        gas: 100_000,
+        last_return_data: 3,
+        memory_contents: "",
+        program_counter: 1,
+        stack: [3, 1],
+        words_in_memory: 0
+      }
+
+      execution_environment = %TinyEVM.ExecutionEnvironment{
+        address: "0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6",
+        block_header: nil,
+        call_depth: nil,
+        data: "",
+        gas_price: 0,
+        machine_code: <<85>>,
+        origin: nil,
+        permission: true,
+        sender: nil,
+        value: 0
+      }
+
+      updated_vm_map = %{
+        world_state: %{},
+        machine_state: %TinyEVM.MachineState{
+          gas: 100_000,
+          last_return_data: 2,
+          memory_contents: "",
+          program_counter: 1,
+          stack: [2],
+          words_in_memory: 0
+        },
+        execution_environment: %TinyEVM.ExecutionEnvironment{
+          address: "0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6",
+          block_header: nil,
+          call_depth: nil,
+          data: "",
+          gas_price: 0,
+          machine_code: <<85>>,
+          origin: nil,
+          permission: true,
+          sender: nil,
+          value: 0
+        }
+      }
+
+      {updated_world_state, updated_machine_state, updated_execution_environment} =
+        TinyEVM.Operation.run(world_state, operation, machine_state, execution_environment)
+
+      assert updated_world_state == updated_vm_map.world_state
+      assert updated_machine_state == updated_vm_map.machine_state
+      assert updated_execution_environment == updated_vm_map.execution_environment
+    end
   end
 end
