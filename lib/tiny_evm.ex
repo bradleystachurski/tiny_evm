@@ -85,6 +85,7 @@ defmodule TinyEVM do
     - `machine_state_prime`: The resultant machine state after recursive execution.
 
   ## Examples
+
     iex> TinyEVM.execution_xi(%{}, %TinyEVM.MachineState{gas: 1000000}, %TinyEVM.ExecutionEnvironment{address: "0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6", machine_code: <<96, 5, 96, 2, 127, 128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 9, 96, 0, 85>>, permission: true})
     {%{"0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6" => %{0 => 3}},
     %{

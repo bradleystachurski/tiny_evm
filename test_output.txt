@@ -1,0 +1,1444 @@
+Compiling 1 file (.ex)
+warning: test/support/eth_test.ex does not match "*_test.exs" and won't be loaded
+========================================
+New pop_n
+========================================
+machine_state: %TinyEVM.MachineState{
+  gas: 999997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %TinyEVM.MachineState{
+  gas: 999997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999994,
+  last_return_data: 5,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [5],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 999994,
+  last_return_data: 5,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [5],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999991,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [2, 5],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 999991,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [2, 5],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999983,
+  last_return_data: 57896044618658097711785492504343953926634992332820282019728792003956564819969,
+  memory_contents: "",
+  program_counter: 37,
+  stack: [57896044618658097711785492504343953926634992332820282019728792003956564819969,
+   2, 5],
+  words_in_memory: 0
+}
+n: 3
+values: [57896044618658097711785492504343953926634992332820282019728792003956564819969,
+ 2, 5]
+machine_state: %{
+  gas: 999983,
+  last_return_data: 57896044618658097711785492504343953926634992332820282019728792003956564819969,
+  memory_contents: "",
+  program_counter: 37,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999980,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 38,
+  stack: [3],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 999980,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 38,
+  stack: [3],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 979980,
+  last_return_data: 0,
+  memory_contents: "",
+  program_counter: 40,
+  stack: [0, 3],
+  words_in_memory: 0
+}
+n: 2
+values: [0, 3]
+machine_state: %{
+  gas: 979980,
+  last_return_data: 0,
+  memory_contents: "",
+  program_counter: 40,
+  stack: [],
+  words_in_memory: 0
+}
+.========================================
+New pop_n
+========================================
+machine_state: %TinyEVM.MachineState{
+  gas: 999997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %TinyEVM.MachineState{
+  gas: 999997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999994,
+  last_return_data: 5,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [5],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 999994,
+  last_return_data: 5,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [5],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999991,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [2, 5],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 999991,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [2, 5],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999983,
+  last_return_data: 57896044618658097711785492504343953926634992332820282019728792003956564819969,
+  memory_contents: "",
+  program_counter: 37,
+  stack: [57896044618658097711785492504343953926634992332820282019728792003956564819969,
+   2, 5],
+  words_in_memory: 0
+}
+n: 3
+values: [57896044618658097711785492504343953926634992332820282019728792003956564819969,
+ 2, 5]
+machine_state: %{
+  gas: 999983,
+  last_return_data: 57896044618658097711785492504343953926634992332820282019728792003956564819969,
+  memory_contents: "",
+  program_counter: 37,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999980,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 38,
+  stack: [3],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 999980,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 38,
+  stack: [3],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 979980,
+  last_return_data: 0,
+  memory_contents: "",
+  program_counter: 40,
+  stack: [0, 3],
+  words_in_memory: 0
+}
+n: 2
+values: [0, 3]
+machine_state: %{
+  gas: 979980,
+  last_return_data: 0,
+  memory_contents: "",
+  program_counter: 40,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %TinyEVM.MachineState{
+  gas: 99997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %TinyEVM.MachineState{
+  gas: 99997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99994,
+  last_return_data: 14,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99994,
+  last_return_data: 14,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99991,
+  last_return_data: 13,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99991,
+  last_return_data: 13,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99988,
+  last_return_data: 12,
+  memory_contents: "",
+  program_counter: 6,
+  stack: [12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99988,
+  last_return_data: 12,
+  memory_contents: "",
+  program_counter: 6,
+  stack: [12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99985,
+  last_return_data: 11,
+  memory_contents: "",
+  program_counter: 8,
+  stack: [11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99985,
+  last_return_data: 11,
+  memory_contents: "",
+  program_counter: 8,
+  stack: [11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99982,
+  last_return_data: 10,
+  memory_contents: "",
+  program_counter: 10,
+  stack: [10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99982,
+  last_return_data: 10,
+  memory_contents: "",
+  program_counter: 10,
+  stack: [10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99979,
+  last_return_data: 9,
+  memory_contents: "",
+  program_counter: 12,
+  stack: [9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99979,
+  last_return_data: 9,
+  memory_contents: "",
+  program_counter: 12,
+  stack: [9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99976,
+  last_return_data: 8,
+  memory_contents: "",
+  program_counter: 14,
+  stack: [8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99976,
+  last_return_data: 8,
+  memory_contents: "",
+  program_counter: 14,
+  stack: [8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99973,
+  last_return_data: 7,
+  memory_contents: "",
+  program_counter: 16,
+  stack: [7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99973,
+  last_return_data: 7,
+  memory_contents: "",
+  program_counter: 16,
+  stack: [7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99970,
+  last_return_data: 6,
+  memory_contents: "",
+  program_counter: 18,
+  stack: [6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99970,
+  last_return_data: 6,
+  memory_contents: "",
+  program_counter: 18,
+  stack: [6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99967,
+  last_return_data: 5,
+  memory_contents: "",
+  program_counter: 20,
+  stack: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99967,
+  last_return_data: 5,
+  memory_contents: "",
+  program_counter: 20,
+  stack: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99964,
+  last_return_data: 4,
+  memory_contents: "",
+  program_counter: 22,
+  stack: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99964,
+  last_return_data: 4,
+  memory_contents: "",
+  program_counter: 22,
+  stack: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99961,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 24,
+  stack: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99961,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 24,
+  stack: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99958,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 26,
+  stack: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99958,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 26,
+  stack: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99955,
+  last_return_data: 1,
+  memory_contents: "",
+  program_counter: 28,
+  stack: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99955,
+  last_return_data: 1,
+  memory_contents: "",
+  program_counter: 28,
+  stack: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99952,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 30,
+  stack: [3, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 15
+values: [3, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+machine_state: %{
+  gas: 99952,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 30,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 79952,
+  last_return_data: [14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 3],
+  memory_contents: "",
+  program_counter: 31,
+  stack: [14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 3],
+  words_in_memory: 0
+}
+n: 2
+values: [14, 1]
+machine_state: %{
+  gas: 79952,
+  last_return_data: [14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 3],
+  memory_contents: "",
+  program_counter: 31,
+  stack: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 3],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %TinyEVM.MachineState{
+  gas: 99997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %TinyEVM.MachineState{
+  gas: 99997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99994,
+  last_return_data: 1,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [1],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99994,
+  last_return_data: 1,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [1],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99991,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [3, 1],
+  words_in_memory: 0
+}
+n: 2
+values: [3, 1]
+machine_state: %{
+  gas: 99991,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99988,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 5,
+  stack: [2],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99988,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 5,
+  stack: [2],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 79988,
+  last_return_data: 0,
+  memory_contents: "",
+  program_counter: 7,
+  stack: [0, 2],
+  words_in_memory: 0
+}
+n: 2
+values: [0, 2]
+machine_state: %{
+  gas: 79988,
+  last_return_data: 0,
+  memory_contents: "",
+  program_counter: 7,
+  stack: [],
+  words_in_memory: 0
+}
+.========================================
+New pop_n
+========================================
+machine_state: %TinyEVM.MachineState{
+  gas: 999997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %TinyEVM.MachineState{
+  gas: 999997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999994,
+  last_return_data: 5,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [5],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 999994,
+  last_return_data: 5,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [5],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999991,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [2, 5],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 999991,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [2, 5],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999983,
+  last_return_data: 57896044618658097711785492504343953926634992332820282019728792003956564819969,
+  memory_contents: "",
+  program_counter: 37,
+  stack: [57896044618658097711785492504343953926634992332820282019728792003956564819969,
+   2, 5],
+  words_in_memory: 0
+}
+n: 3
+values: [57896044618658097711785492504343953926634992332820282019728792003956564819969,
+ 2, 5]
+machine_state: %{
+  gas: 999983,
+  last_return_data: 57896044618658097711785492504343953926634992332820282019728792003956564819969,
+  memory_contents: "",
+  program_counter: 37,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999980,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 38,
+  stack: [3],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 999980,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 38,
+  stack: [3],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 979980,
+  last_return_data: 0,
+  memory_contents: "",
+  program_counter: 40,
+  stack: [0, 3],
+  words_in_memory: 0
+}
+n: 2
+values: [0, 3]
+machine_state: %{
+  gas: 979980,
+  last_return_data: 0,
+  memory_contents: "",
+  program_counter: 40,
+  stack: [],
+  words_in_memory: 0
+}
+.========================================
+New pop_n
+========================================
+machine_state: %TinyEVM.MachineState{
+  gas: 999997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %TinyEVM.MachineState{
+  gas: 999997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999994,
+  last_return_data: 5,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [5],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 999994,
+  last_return_data: 5,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [5],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999991,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [2, 5],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 999991,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [2, 5],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999983,
+  last_return_data: 57896044618658097711785492504343953926634992332820282019728792003956564819969,
+  memory_contents: "",
+  program_counter: 37,
+  stack: [57896044618658097711785492504343953926634992332820282019728792003956564819969,
+   2, 5],
+  words_in_memory: 0
+}
+n: 3
+values: [57896044618658097711785492504343953926634992332820282019728792003956564819969,
+ 2, 5]
+machine_state: %{
+  gas: 999983,
+  last_return_data: 57896044618658097711785492504343953926634992332820282019728792003956564819969,
+  memory_contents: "",
+  program_counter: 37,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 999980,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 38,
+  stack: [3],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 999980,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 38,
+  stack: [3],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 979980,
+  last_return_data: 0,
+  memory_contents: "",
+  program_counter: 40,
+  stack: [0, 3],
+  words_in_memory: 0
+}
+n: 2
+values: [0, 3]
+machine_state: %{
+  gas: 979980,
+  last_return_data: 0,
+  memory_contents: "",
+  program_counter: 40,
+  stack: [],
+  words_in_memory: 0
+}
+.========================================
+New pop_n
+========================================
+machine_state: %TinyEVM.MachineState{
+  gas: 99997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %TinyEVM.MachineState{
+  gas: 99997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99994,
+  last_return_data: 14,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99994,
+  last_return_data: 14,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99991,
+  last_return_data: 13,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99991,
+  last_return_data: 13,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99988,
+  last_return_data: 12,
+  memory_contents: "",
+  program_counter: 6,
+  stack: [12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99988,
+  last_return_data: 12,
+  memory_contents: "",
+  program_counter: 6,
+  stack: [12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99985,
+  last_return_data: 11,
+  memory_contents: "",
+  program_counter: 8,
+  stack: [11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99985,
+  last_return_data: 11,
+  memory_contents: "",
+  program_counter: 8,
+  stack: [11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99982,
+  last_return_data: 10,
+  memory_contents: "",
+  program_counter: 10,
+  stack: [10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99982,
+  last_return_data: 10,
+  memory_contents: "",
+  program_counter: 10,
+  stack: [10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99979,
+  last_return_data: 9,
+  memory_contents: "",
+  program_counter: 12,
+  stack: [9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99979,
+  last_return_data: 9,
+  memory_contents: "",
+  program_counter: 12,
+  stack: [9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99976,
+  last_return_data: 8,
+  memory_contents: "",
+  program_counter: 14,
+  stack: [8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99976,
+  last_return_data: 8,
+  memory_contents: "",
+  program_counter: 14,
+  stack: [8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99973,
+  last_return_data: 7,
+  memory_contents: "",
+  program_counter: 16,
+  stack: [7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99973,
+  last_return_data: 7,
+  memory_contents: "",
+  program_counter: 16,
+  stack: [7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99970,
+  last_return_data: 6,
+  memory_contents: "",
+  program_counter: 18,
+  stack: [6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99970,
+  last_return_data: 6,
+  memory_contents: "",
+  program_counter: 18,
+  stack: [6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99967,
+  last_return_data: 5,
+  memory_contents: "",
+  program_counter: 20,
+  stack: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99967,
+  last_return_data: 5,
+  memory_contents: "",
+  program_counter: 20,
+  stack: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99964,
+  last_return_data: 4,
+  memory_contents: "",
+  program_counter: 22,
+  stack: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99964,
+  last_return_data: 4,
+  memory_contents: "",
+  program_counter: 22,
+  stack: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99961,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 24,
+  stack: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99961,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 24,
+  stack: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99958,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 26,
+  stack: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99958,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 26,
+  stack: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99955,
+  last_return_data: 1,
+  memory_contents: "",
+  program_counter: 28,
+  stack: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99955,
+  last_return_data: 1,
+  memory_contents: "",
+  program_counter: 28,
+  stack: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99952,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 30,
+  stack: [3, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  words_in_memory: 0
+}
+n: 15
+values: [3, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+machine_state: %{
+  gas: 99952,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 30,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 79952,
+  last_return_data: [14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 3],
+  memory_contents: "",
+  program_counter: 31,
+  stack: [14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 3],
+  words_in_memory: 0
+}
+n: 2
+values: [14, 1]
+machine_state: %{
+  gas: 79952,
+  last_return_data: [14, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 3],
+  memory_contents: "",
+  program_counter: 31,
+  stack: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 3],
+  words_in_memory: 0
+}
+.========================================
+New pop_n
+========================================
+machine_state: %TinyEVM.MachineState{
+  gas: 99997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %TinyEVM.MachineState{
+  gas: 99997,
+  last_return_data: [],
+  memory_contents: "",
+  program_counter: 0,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99994,
+  last_return_data: 1,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [1],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99994,
+  last_return_data: 1,
+  memory_contents: "",
+  program_counter: 2,
+  stack: [1],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99991,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [3, 1],
+  words_in_memory: 0
+}
+n: 2
+values: [3, 1]
+machine_state: %{
+  gas: 99991,
+  last_return_data: 3,
+  memory_contents: "",
+  program_counter: 4,
+  stack: [],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 99988,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 5,
+  stack: [2],
+  words_in_memory: 0
+}
+n: 0
+values: []
+machine_state: %{
+  gas: 99988,
+  last_return_data: 2,
+  memory_contents: "",
+  program_counter: 5,
+  stack: [2],
+  words_in_memory: 0
+}
+========================================
+New pop_n
+========================================
+machine_state: %{
+  gas: 79988,
+  last_return_data: 0,
+  memory_contents: "",
+  program_counter: 7,
+  stack: [0, 2],
+  words_in_memory: 0
+}
+n: 2
+values: [0, 2]
+machine_state: %{
+  gas: 79988,
+  last_return_data: 0,
+  memory_contents: "",
+  program_counter: 7,
+  stack: [],
+  words_in_memory: 0
+}
+.....
+
+Finished in 0.1 seconds
+8 doctests, 2 tests, 0 failures
+
+Randomized with seed 729453

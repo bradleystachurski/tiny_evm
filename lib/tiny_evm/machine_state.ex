@@ -49,6 +49,13 @@ defmodule TinyEVM.MachineState do
 
     - `values`: Items returned from the stack.
     - `machine_state`: Updated machine state.
+
+  ## Examples
+      iex> TinyEVM.MachineState.pop_n(%TinyEVM.MachineState{stack: [1, 2, 3]}, 3)
+      {[1, 2, 3], %TinyEVM.MachineState{stack: []}}
+
+      iex> TinyEVM.MachineState.pop_n(%TinyEVM.MachineState{stack: [1, 2, 3, 4, 5]}, 1)
+      {[1], %TinyEVM.MachineState{stack: [2, 3, 4, 5]}}
   """
   @spec pop_n(MachineState.t(), non_neg_integer()) :: {[integer()], MachineState.t()}
   def pop_n(machine_state, n) do
