@@ -64,6 +64,7 @@ defmodule TinyEVM.Gas do
     cost > machine_state.gas
   end
 
+  @spec subtract_gas(MachineState.t(), ExecutionEnvironment.t()) :: MachineState.t()
   def subtract_gas(machine_state, execution_environment) do
     cost = cost(machine_state, execution_environment)
 
