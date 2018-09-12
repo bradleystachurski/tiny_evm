@@ -52,7 +52,7 @@ defmodule TinyEVMTest do
 
     expected_world_state = %{"0x0f572e5295c57f15886f9b263e2f6d2d6c7b5ec6" => %{0 => 3}}
 
-    expected_machine_state = %{
+    expected_machine_state = %TinyEVM.MachineState{
       gas: 979_980,
       program_counter: 41,
       stack: [],

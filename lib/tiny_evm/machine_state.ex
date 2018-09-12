@@ -78,8 +78,11 @@ defmodule TinyEVM.MachineState do
   end
 
   def get_and_update(data, key, function) do
-    data
-    |> Map.from_struct()
-    |> Map.get_and_update(key, function)
+    {get, updated_map} =
+      data
+      |> Map.from_struct()
+      |> Map.get_and_update(key, function)
+
+    {get, struct(MachineState, updated_map)}
   end
 end
