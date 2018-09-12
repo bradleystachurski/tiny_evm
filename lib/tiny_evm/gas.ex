@@ -1,6 +1,7 @@
 defmodule TinyEVM.Gas do
   @moduledoc """
-  Gas stuff
+  Functions for working with gas costs along with the mapping
+  of functions to cost.
   """
 
   alias TinyEVM.{MachineState, ExecutionEnvironment, MachineCode}
@@ -28,7 +29,11 @@ defmodule TinyEVM.Gas do
   Calculates the cost to run the current operation.
 
   ## Examples
+    iex> TinyEVM.Gas.cost(%TinyEVM.MachineState{gas: 1000000}, %TinyEVM.ExecutionEnvironment{machine_code: <<96>>})
+    3
 
+    iex> TinyEVM.Gas.cost(%TinyEVM.MachineState{gas: 1000000}, %TinyEVM.ExecutionEnvironment{machine_code: <<9>>})
+    8
   """
   @spec cost(MachineState.t(), ExecutionEnvironment.t()) :: integer() | nil
   def cost(machine_state, execution_environment) do
