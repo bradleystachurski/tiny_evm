@@ -9,7 +9,8 @@ defmodule TinyEVM.MachineCode do
   @type t :: binary()
 
   @doc """
-  `w` from the Yellow Paper
+  Current operation to be executed, defined as `w` in Section
+  9.4.1 of the Yellow Paper.
 
   ## Examples
 

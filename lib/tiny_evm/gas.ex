@@ -44,12 +44,12 @@ defmodule TinyEVM.Gas do
       else: static_operation_cost(operation.function)
   end
 
-  @spec sstore_cost() :: non_neg_integer()
   # no resets are tested, so cost will always be 20,000 gas
-  def sstore_cost, do: 20000
+  @spec sstore_cost() :: non_neg_integer()
+  defp sstore_cost, do: 20000
 
   @spec static_operation_cost(atom()) :: non_neg_integer | nil
-  def static_operation_cost(operation) do
+  defp static_operation_cost(operation) do
     gas_group =
       Enum.find(Map.keys(@fee_schedule), fn x ->
         Enum.member?(@fee_schedule[x][:operations], operation)

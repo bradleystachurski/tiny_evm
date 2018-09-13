@@ -22,7 +22,7 @@ defmodule TinyEVM.Stack do
 
   @doc """
   Removes n items from the stack and returns the tuple
-  of the items removed and updated stack.
+  of the list of items removed and updated stack.
 
   ## Examples
       iex> TinyEVM.Stack.pop_n([1, 2, 3], 1)
